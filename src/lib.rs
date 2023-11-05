@@ -22,6 +22,5 @@ pub mod prelude {
 	pub use crate::bounded_u32::*;
 	pub use crate::clamp01::*;
 	pub use crate::disallow_click_focus::*;
-	pub use crate::inspectors::*;
 	pub use crate::tref_acquirer::*;
 }
