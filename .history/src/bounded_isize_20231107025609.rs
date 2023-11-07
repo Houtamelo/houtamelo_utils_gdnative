@@ -333,58 +333,10 @@ impl<const MIN: isize, const MAX: isize> From<f64> for BoundISize<MIN, MAX> {
 	}
 }
 
-impl<const MIN: isize, const MAX: isize> Into<i32> for BoundISize<MIN, MAX> {
-    fn into(self) -> i32 {
-        return self.inner_value as i32;
-    }
-}
-
-impl<const MIN: isize, const MAX: isize> Into<i64> for BoundISize<MIN, MAX> {
-	fn into(self) -> i64 {
-		return self.inner_value as i64;
-	}
-}
-
-impl<const MIN: isize, const MAX: isize> Into<usize> for BoundISize<MIN, MAX> {
-	fn into(self) -> usize {
-		return if self.inner_value > 0 {
-			self.inner_value as usize
-		} else {
-			0
-		};
-	}
-}
-
-impl<const MIN: isize, const MAX: isize> Into<u32> for BoundISize<MIN, MAX> {
-	fn into(self) -> u32 {
-		return if self.inner_value > 0 {
-			self.inner_value as u32
-		} else {
-			0
-		};
-	}
-}
-
-impl<const MIN: isize, const MAX: isize> Into<u64> for BoundISize<MIN, MAX> {
-	fn into(self) -> u64 {
-		return if self.inner_value > 0 {
-			self.inner_value as u64
-		} else {
-			0
-		};
-	}
-}
-
-impl<const MIN: isize, const MAX: isize> Into<f32> for BoundISize<MIN, MAX> {
-	fn into(self) -> f32 {
-		return self.inner_value as f32;
-	}
-}
-
 impl<const MIN: isize, const MAX: isize> Into<f64> for BoundISize<MIN, MAX> {
-	fn into(self) -> f64 {
-		return self.inner_value as f64;
-	}
+    fn into(self) -> f64 {
+        return self.inner_value as f64;
+    }
 }
 
 #[cfg(test)]

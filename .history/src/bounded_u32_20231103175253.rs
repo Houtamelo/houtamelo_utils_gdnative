@@ -297,20 +297,14 @@ impl<const MIN: u32, const MAX: u32> PartialOrd<isize> for BoundU32<MIN, MAX> {
 	}
 }
 
-impl<const MIN: u32, const MAX: u32> From<usize> for BoundU32<MIN, MAX> {
-	fn from(value: usize) -> Self {
-		return Self::new(value as u32);
-	}
-}
-
 impl<const MIN: u32, const MAX: u32> From<u32> for BoundU32<MIN, MAX> {
 	fn from(value: u32) -> Self {
 		return Self::new(value);
 	}
 }
 
-impl<const MIN: u32, const MAX: u32> From<u64> for BoundU32<MIN, MAX> {
-	fn from(value: u64) -> Self {
+impl<const MIN: u32, const MAX: u32> From<usize> for BoundU32<MIN, MAX> {
+	fn from(value: usize) -> Self {
 		return Self::new(value as u32);
 	}
 }
@@ -580,74 +574,6 @@ impl<const MIN: u32, const MAX: u32> From<i64> for BoundU32<MIN, MAX> {
 		} else {
 			return Self::new(value as u32);
 		}
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> From<f32> for BoundU32<MIN, MAX> {
-	fn from(value: f32) -> Self {
-		if value < 0.0 {
-			return Self::new(0);
-		} else {
-			return Self::new(value as u32);
-		}
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> From<f64> for BoundU32<MIN, MAX> {
-	fn from(value: f64) -> Self {
-		if value < 0.0 {
-			return Self::new(0);
-		} else {
-			return Self::new(value as u32);
-		}
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<usize> for BoundU32<MIN, MAX> {
-	fn into(self) -> usize {
-		return self.inner_value as usize;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<u32> for BoundU32<MIN, MAX> {
-	fn into(self) -> u32 {
-		return self.inner_value;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<u64> for BoundU32<MIN, MAX> {
-	fn into(self) -> u64 {
-		return self.inner_value as u64;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<isize> for BoundU32<MIN, MAX> {
-	fn into(self) -> isize {
-		return self.inner_value as isize;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<i32> for BoundU32<MIN, MAX> {
-	fn into(self) -> i32 {
-		return self.inner_value as i32;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<i64> for BoundU32<MIN, MAX> {
-	fn into(self) -> i64 {
-		return self.inner_value as i64;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<f32> for BoundU32<MIN, MAX> {
-	fn into(self) -> f32 {
-		return self.inner_value as f32;
-	}
-}
-
-impl<const MIN: u32, const MAX: u32> Into<f64> for BoundU32<MIN, MAX> {
-	fn into(self) -> f64 {
-		return self.inner_value as f64;
 	}
 }
 
