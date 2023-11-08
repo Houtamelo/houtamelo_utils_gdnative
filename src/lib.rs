@@ -1,4 +1,4 @@
-use gdnative::init::{godot_gdnative_init, godot_gdnative_terminate, godot_nativescript_init};
+use gdnative::init::{ godot_gdnative_init, godot_gdnative_terminate, godot_nativescript_init };
 use gdnative::prelude::*;
 
 pub(crate) mod bounded_ints;
@@ -8,6 +8,7 @@ pub mod hashset_macro;
 pub mod disallow_click_focus;
 pub mod inspectors;
 pub mod tref_acquirer;
+pub mod godot_panic;
 
 fn init(handle: InitHandle) {
 	handle.add_class::<prelude::DisallowClickFocus>();
@@ -22,4 +23,5 @@ pub mod prelude {
 	pub use crate::clamp01::*;
 	pub use crate::disallow_click_focus::*;
 	pub use crate::tref_acquirer::*;
+	pub use crate::godot_panic::*;
 }
