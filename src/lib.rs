@@ -8,6 +8,7 @@ pub mod hashset_macro;
 pub mod disallow_click_focus;
 pub mod inspectors;
 pub mod tref_acquirer;
+pub mod tref_unwrapper;
 pub mod godot_log_macros;
 
 fn init(handle: InitHandle) {
@@ -29,4 +30,5 @@ pub mod prelude {
 	pub use crate::godot_panic;
 	pub use crate::hash_set;
 	pub use crate::tref_acquirer::*;
+	pub use crate::tref_unwrapper::*;
 }

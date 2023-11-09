@@ -48,6 +48,3 @@ pub trait ErrInspector<T> {
 	fn on_err(&self, closure: impl FnOnce(&T));
 	fn report_on_err(&self);
 }
-
-
-
