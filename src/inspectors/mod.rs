@@ -7,7 +7,7 @@ use gdnative::prelude::*;
 use super::tref_acquirer::*;
 
 pub trait SomeInspector<T> {
-	fn on_some(&self, closure: impl FnOnce(&T));
+	fn on_some(&self, closure: impl FnOnce(&T)) where T : std::fmt::Debug;
 }
 
 pub trait SomeMutInspector<T> {

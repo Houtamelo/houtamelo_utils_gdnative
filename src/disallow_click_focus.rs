@@ -1,7 +1,7 @@
 use gdnative::api::InputEventMouseButton;
 use gdnative::prelude::*;
 use super::inspectors::*;
-
+#[allow(clippy::unused_variable)]
 #[derive(NativeClass)]
 #[inherit(Control)]
 pub struct DisallowClickFocus { }

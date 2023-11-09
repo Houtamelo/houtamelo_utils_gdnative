@@ -13,7 +13,9 @@ impl<T> AssertSaneTRef<T> for Option<Ref<T, Shared>> where T : GodotObject<Memor
 			}
 		}
 
-		godot_error!("Failed to get object through sane assertion, input: {self:?}");
+		let trace = std::backtrace::Backtrace::capture();
+		let type_name = std::any::type_name::<Option<Ref<T, Shared>>>();
+		godot_error!("assert_tref_if_sane was called with none, type: {type_name}.\n {trace}");
 		return None;
 	}
 }
@@ -26,7 +28,9 @@ impl<T> AssertSaneTRef<T> for Option<&Ref<T, Shared>> where T : GodotObject<Memo
 			}
 		}
 
-		godot_error!("Failed to get object through sane assertion, input: {self:?}");
+		let trace = std::backtrace::Backtrace::capture();
+		let type_name = std::any::type_name::<Option<&Ref<T, Shared>>>();
+		godot_error!("assert_tref_if_sane was called with none, type: {type_name}.\n {trace}");
 		return None;
 	}
 }
@@ -41,7 +45,9 @@ impl<T> AssertSafeTRef<T> for Option<Ref<T, Shared>> where T : GodotObject<Memor
 			return Some(unsafe { obj_ref.assume_safe() });
 		}
 
-		godot_error!("Failed to get object, input: {self:?}");
+		let trace = std::backtrace::Backtrace::capture();
+		let type_name = std::any::type_name::<Option<Ref<T, Shared>>>();
+		godot_error!("assert_tref was called with none, type: {type_name}.\n {trace}");
 		return None;
 	}
 }
@@ -52,7 +58,9 @@ impl<T> AssertSafeTRef<T> for Option<&Ref<T, Shared>> where T : GodotObject<Memo
 			return Some(unsafe { obj_ref.assume_safe() });
 		}
 
-		godot_error!("Failed to get object, input: {self:?}");
+		let trace = std::backtrace::Backtrace::capture();
+		let type_name = std::any::type_name::<Option<&Ref<T, Shared>>>();
+		godot_error!("assert_tref was called with none, type: {type_name}.\n {trace}");
 		return None;
 	}
 }
@@ -121,7 +129,9 @@ impl<T> AssertTInstance<T> for Option<Instance<T>> where T : NativeClass {
 			return Some(unsafe { obj_ref.assume_safe() });
 		}
 
-		godot_error!("Failed to get instance.");
+		let trace = std::backtrace::Backtrace::capture();
+		let type_name = std::any::type_name::<Option<Instance<T>>>();
+		godot_error!("assert_tinstance was called with none, type: {type_name}.\n {trace}");
 		return None;
 	}
 }
@@ -133,7 +143,9 @@ impl<T> AssertTInstance<T> for Option<&Instance<T>> where T : NativeClass {
 			return Some(unsafe { obj_ref.assume_safe() });
 		}
 
-		godot_error!("Failed to get instance.");
+		let trace = std::backtrace::Backtrace::capture();
+		let type_name = std::any::type_name::<Option<&Instance<T>>>();
+		godot_error!("assert_tinstance was called with none, type: {type_name}.\n {trace}");
 		return None;
 	}
 }
