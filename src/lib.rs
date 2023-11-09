@@ -23,5 +23,6 @@ pub mod prelude {
 	pub use crate::clamp01::*;
 	pub use crate::disallow_click_focus::*;
 	pub use crate::tref_acquirer::*;
-	pub use crate::godot_panic::*;
+	pub use crate::godot_error_get;
+	pub use crate::godot_panic;
 }
