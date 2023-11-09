@@ -1,19 +1,19 @@
 #[macro_export]
 macro_rules! godot_panic {
-    ($msg:expr) => {
-        {
-            godot_error!("{}", $msg);
-            panic!("{}", $msg)
-        }
-    }
+    ($($args:tt)*) => ({
+        let msg = std::format!($($args)*);
+        gdnative::log::error(gdnative::godot_site!(), msg.as_str());
+        panic!("{msg}");
+    });
 }
 
 #[macro_export]
 macro_rules! godot_error_get {
-    ($msg:expr) => {
-        {
-            godot_error!("{}", $msg);
-            $msg
-        }
-    }
+    ($($args:tt)*) => ({
+        #[allow(unused_variables)]
+        let msg = std::format!($($args)*);
+        #[allow(unused_variables)]
+        gdnative::log::error(gdnative::godot_site!(), msg.as_str());
+        msg
+    });
 }
