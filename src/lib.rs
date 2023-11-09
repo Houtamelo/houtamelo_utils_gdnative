@@ -20,9 +20,13 @@ godot_gdnative_terminate!(_ as houtamelo_utils_gdnative_terminate);
 
 pub mod prelude {
 	pub use crate::bounded_ints::*;
+	pub use crate::inspectors::*;
+	pub use crate::inspectors::option_impls::*;
+	pub use crate::inspectors::option_ref_impls::*;
 	pub use crate::clamp01::*;
 	pub use crate::disallow_click_focus::*;
-	pub use crate::tref_acquirer::*;
 	pub use crate::godot_error_get;
 	pub use crate::godot_panic;
+	pub use crate::hash_set;
+	pub use crate::tref_acquirer::*;
 }
