@@ -8,7 +8,7 @@ pub mod hashset_macro;
 pub mod disallow_click_focus;
 pub mod inspectors;
 pub mod tref_acquirer;
-pub mod godot_panic;
+pub mod godot_log_macros;
 
 fn init(handle: InitHandle) {
 	handle.add_class::<prelude::DisallowClickFocus>();
