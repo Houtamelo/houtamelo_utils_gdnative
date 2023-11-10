@@ -7,7 +7,7 @@ impl<T> SomeInspector<T> for Option<T> {
 			closure(value);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<T>>();
 				godot_warn!("on_some was called with none, type: {type_name}.\n {trace}");
 			}
@@ -21,7 +21,7 @@ impl<T> SomeMutInspector<T> for Option<T> {
 			closure(value);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<T>>();
 				godot_warn!("on_some_mut was called with none, type: {type_name}.\n {trace}");
 			}
@@ -35,7 +35,7 @@ impl <T> GodotManualSomeInspector<T> for Option<Ref<T>> where T: GodotObject<Mem
 			closure(value);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
 				godot_warn!("on_sane was called with none, type: {type_name}.\n {trace}");
 			}
@@ -47,7 +47,7 @@ impl <T> GodotManualSomeInspector<T> for Option<Ref<T>> where T: GodotObject<Mem
 			return Some(closure(value));
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
 				godot_warn!("map_on_sane was called with none, type: {type_name}.\n {trace}");
 			}
@@ -63,7 +63,7 @@ impl <T> GodotRefCountedSomeInspector<T> for Option<Ref<T>> where T: GodotObject
 			closure(value);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
 				godot_warn!("on_safe was called with none, type: {type_name}.\n {trace}");
 			}
@@ -76,7 +76,7 @@ impl <T> GodotRefCountedSomeInspector<T> for Option<Ref<T>> where T: GodotObject
 			return Some(closure(value));
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
 				godot_warn!("map_on_safe was called with none, type: {type_name}.\n {trace}");
 			}
@@ -96,7 +96,7 @@ impl <'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 			let _ = value.map(closure);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Instance<T>>>();
 				godot_warn!("on_safe was called with none, type: {type_name}.\n {trace}");
 			}
@@ -108,7 +108,7 @@ impl <'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 			let _ = value.map_mut(closure);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Instance<T>>>();
 				godot_warn!("on_safe_mut was called with none, type: {type_name}.\n {trace}");
 			}
@@ -122,7 +122,7 @@ impl <TValue, TError> OkInspector<TValue> for Result<TValue, TError> {
 			closure(value);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Result<TValue, TError>>();
 				godot_warn!("on_ok was called with err, type: {type_name}.\n {trace}");
 			}
@@ -136,7 +136,7 @@ impl <TValue, TError> OkMutInspector<TValue> for Result<TValue, TError> {
 			closure(value);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Result<TValue, TError>>();
 				godot_warn!("on_ok_mut was called with err, type: {type_name}.\n {trace}");
 			}
@@ -150,7 +150,7 @@ impl NoneInspector for Option<()> {
 			closure();
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				godot_warn!("on_none was called with some, type: void.\n {trace}");
 			}
 		}
@@ -163,7 +163,7 @@ impl <TValue, TError> ErrInspector<TError> for Result<TValue, TError> where TErr
 			closure(error);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Result<TValue, TError>>();
 				godot_warn!("on_err was called with ok, type: {type_name}.\n {trace}");
 			}
@@ -175,7 +175,7 @@ impl <TValue, TError> ErrInspector<TError> for Result<TValue, TError> where TErr
 			godot_error!("{}", error);
 		} else {
 			#[cfg(feature = "log")] {
-				let trace = std::backtrace::Backtrace::capture();
+				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Result<TValue, TError>>();
 				godot_warn!("report_on_err was called with ok, type: {type_name}.\n {trace}");
 			}

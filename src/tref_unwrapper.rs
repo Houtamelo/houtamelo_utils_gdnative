@@ -14,7 +14,7 @@ impl<T> UnwrapManual<T> for Option<Ref<T, Shared>> where T : GodotObject<Memory 
 			}
 		}
 
-		let trace = std::backtrace::Backtrace::capture();
+		let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Option<Ref<T, Shared>>>();
 		godot_panic!("Failed to unwrap object through sane assertion, type: {type_name}.\n {trace}");
 	}
@@ -28,7 +28,7 @@ impl<T> UnwrapManual<T> for Option<&Ref<T, Shared>> where T : GodotObject<Memory
 			}
 		}
 
-		let trace = std::backtrace::Backtrace::capture();
+		let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Option<&Ref<T, Shared>>>();
 		godot_panic!("Failed to unwrap object through sane assertion, type: {type_name}.\n {trace}");
 	}
@@ -40,7 +40,7 @@ impl<T> UnwrapManual<T> for Ref<T, Shared> where T : GodotObject<Memory = Manual
             return obj_tref;
         }
 
-        let trace = std::backtrace::Backtrace::capture();
+        let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Ref<T, Shared>>();
 		godot_panic!("Failed to unwrap object through sane assertion, type: {type_name}.\n {trace}");
     }
@@ -52,7 +52,7 @@ impl<T> UnwrapManual<T> for &Ref<T, Shared> where T : GodotObject<Memory = Manua
             return obj_tref;
         }
 
-        let trace = std::backtrace::Backtrace::capture();
+        let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Ref<T, Shared>>();
 		godot_panic!("Failed to unwrap object through sane assertion, type: {type_name}.\n {trace}");
     }
@@ -68,7 +68,7 @@ impl<T> UnwrapRefCount<T> for Option<Ref<T, Shared>> where T : GodotObject<Memor
 			return unsafe { obj_ref.assume_safe() };
 		}
 
-		let trace = std::backtrace::Backtrace::capture();
+		let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Option<Ref<T, Shared>>>();
 		godot_panic!("Failed to unwrap object through safe assertion, type: {type_name}.\n {trace}");
 	}
@@ -80,7 +80,7 @@ impl<T> UnwrapRefCount<T> for Option<&Ref<T, Shared>> where T : GodotObject<Memo
 			return unsafe { obj_ref.assume_safe() };
 		}
 
-		let trace = std::backtrace::Backtrace::capture();
+		let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Option<&Ref<T, Shared>>>();
 		godot_panic!("Failed to unwrap object through safe assertion, type: {type_name}.\n {trace}");
 	}
@@ -109,7 +109,7 @@ impl<T> UnwrapInstance<T> for Option<Instance<T>> where T : NativeClass {
 			return unsafe { obj_ref.assume_safe() };
 		}
 
-		let trace = std::backtrace::Backtrace::capture();
+		let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Option<Instance<T>>>();
 		godot_panic!("Failed to unwrap object through safe assertion, type: {type_name}.\n {trace}");
 	}
@@ -122,7 +122,7 @@ impl<T> UnwrapInstance<T> for Option<&Instance<T>> where T : NativeClass {
 			return unsafe { obj_ref.assume_safe() };
 		}
 
-		let trace = std::backtrace::Backtrace::capture();
+		let trace = std::backtrace::Backtrace::force_capture();
 		let type_name = std::any::type_name::<Option<&Instance<T>>>();
 		godot_panic!("Failed to unwrap object through safe assertion, type: {type_name}.\n {trace}");
 	}
