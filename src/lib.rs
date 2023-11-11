@@ -23,6 +23,9 @@ pub mod prelude {
 	pub use crate::bounded_ints::*;
 	pub use crate::inspectors::*;
 	pub use crate::inspectors::option_impls::*;
+	pub use crate::inspectors::manual::*;
+	pub use crate::inspectors::refcounted::*;
+	pub use crate::inspectors::instance::*;
 	pub use crate::clamp01::*;
 	pub use crate::disallow_click_focus::*;
 	pub use crate::godot_error_get;

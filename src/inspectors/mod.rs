@@ -1,4 +1,7 @@
 pub mod option_impls;
+pub mod manual;
+pub mod instance;
+pub mod refcounted;
 
 use gdnative::export::user_data::{Map, MapMut};
 use gdnative::object::bounds::{AssumeSafeLifetime, LifetimeConstraint};
