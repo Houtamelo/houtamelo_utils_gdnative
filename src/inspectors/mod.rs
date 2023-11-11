@@ -3,7 +3,6 @@ pub mod option_impls;
 use gdnative::export::user_data::{Map, MapMut};
 use gdnative::object::bounds::{AssumeSafeLifetime, LifetimeConstraint};
 use gdnative::prelude::*;
-use super::tref_acquirer::*;
 
 pub trait SomeInspector<T> {
 	fn touch_if_some(&self, closure: impl FnOnce(&T));
@@ -38,7 +37,9 @@ pub trait GodotInstanceSomeInspector<'a, 'r, T>
 	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) where T : std::fmt::Debug;
 	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) where T : std::fmt::Debug;
 	#[must_use] fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>;
-	#[must_use] fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> where T : std::fmt::Debug;
+	#[must_use] fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>;
+	#[must_use] fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> where T : std::fmt::Debug;
+	#[must_use] fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> where T : std::fmt::Debug;
 }
 
 pub trait OkInspector<T> {
