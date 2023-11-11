@@ -15,7 +15,7 @@ impl DisallowClickFocus {
 	#[method]
 	fn _gui_input(&self, #[base] _owner: &Control, event: Ref<InputEvent>) {
 		unsafe {
-			event.assume_safe().cast::<InputEventMouseButton>().on_some(|event| {
+			event.assume_safe().cast::<InputEventMouseButton>().touch_if_some(|event| {
 				if event.is_pressed() {
 					_owner.release_focus();
 				}

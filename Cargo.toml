@@ -10,7 +10,3 @@ crate-type = ["lib"]
 [dependencies]
 gdnative = "0.11.3"
 nameof = "1.2.2"
-
-[features]
-default = ["log"]
-log = []
