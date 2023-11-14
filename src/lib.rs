@@ -10,6 +10,7 @@ pub mod inspectors;
 pub mod tref_acquirer;
 pub mod tref_unwrapper;
 pub mod godot_log_macros;
+pub mod extensions;
 
 fn init(handle: InitHandle) {
 	handle.add_class::<prelude::DisallowClickFocus>();
@@ -33,4 +34,5 @@ pub mod prelude {
 	pub use crate::hash_set;
 	pub use crate::tref_acquirer::*;
 	pub use crate::tref_unwrapper::*;
+	pub use crate::extensions::*;
 }
