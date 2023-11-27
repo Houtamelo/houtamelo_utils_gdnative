@@ -1,4 +1,6 @@
-use gdnative::init::{ godot_gdnative_init, godot_gdnative_terminate, godot_nativescript_init };
+#![allow(unused_imports)]
+
+use gdnative::init::{godot_gdnative_init, godot_gdnative_terminate, godot_nativescript_init };
 use gdnative::prelude::*;
 
 pub(crate) mod bounded_ints;

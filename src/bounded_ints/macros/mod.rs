@@ -14,32 +14,32 @@ pub(crate) mod saturate_into;
 #[macro_use] pub(crate) mod div;
 #[macro_use] pub(crate) mod rem;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BoundUSize<const MIN: usize, const MAX: usize> {
 	inner_value: usize
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BoundU32<const MIN: u32, const MAX: u32> {
 	inner_value: u32
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BoundU64<const MIN: u64, const MAX: u64> {
 	inner_value: u64
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BoundISize<const MIN: isize, const MAX: isize> {
 	inner_value: isize
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BoundI32<const MIN: i32, const MAX: i32> {
 	inner_value: i32
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BoundI64<const MIN: i64, const MAX: i64> {
 	inner_value: i64
 }
