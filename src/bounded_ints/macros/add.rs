@@ -1,3 +1,4 @@
+use crate::prelude::BoundUSize;
 macro_rules! bound_add {
 	($type_name:ty, $inner:ty) => {
 		impl<const MIN: $inner, const MAX: $inner> Add for $type_name {
