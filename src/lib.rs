@@ -13,7 +13,7 @@ pub mod tref_acquirer;
 pub mod tref_unwrapper;
 pub mod godot_log_macros;
 pub mod extensions;
-pub mod any_matches_macro;
+pub mod matches_macro;
 
 fn init(handle: InitHandle) {
 	handle.add_class::<prelude::DisallowClickFocus>();

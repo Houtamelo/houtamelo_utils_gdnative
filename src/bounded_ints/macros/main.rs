@@ -1,13 +1,23 @@
 macro_rules! bound_main {
 	($type_name:ty, $inner:ty) => {
 		impl<const MIN: $inner, const MAX: $inner>  $type_name {
-			pub fn new(inner_value: $inner) -> Self {
-				return Self {
-					inner_value: inner_value.clamp(MIN, MAX)
-				};
+			pub const fn new(inner_value: $inner) -> Self {
+				if inner_value >= MAX {
+					return Self {
+						inner_value: MAX
+					};
+				} else if inner_value <= MIN {
+					return Self {
+						inner_value: MIN
+					};
+				} else {
+					return Self {
+						inner_value
+					};
+				}
 			}
 
-			pub fn get(&self) -> $inner { return self.inner_value; }
+			pub const fn get(&self) -> $inner { return self.inner_value; }
 
 			pub fn set(&mut self, value: $inner) { self.inner_value = value.clamp(MIN, MAX); }
 		}

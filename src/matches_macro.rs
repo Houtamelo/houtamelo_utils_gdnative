@@ -5,9 +5,12 @@ macro_rules! any_matches {
 	}
 }
 
-#[test]
-fn test() {
-	let v = vec![1, 2, 3];
-	let result = any_matches!(v, 2);
-	assert!(result);
+#[cfg(test)]
+mod tests {
+	#[test]
+	fn test_any() {
+		let v = vec![1, 2, 3];
+		let result = any_matches!(v, 2);
+		assert!(result);
+	}
 }
