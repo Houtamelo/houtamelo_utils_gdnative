@@ -23,16 +23,23 @@ impl PlayOnClickAndPitchRandomizer {
 		let parent_option = owner.get_parent();
 		let parent = parent_option.unwrap_manual();
 
-		if parent.has_signal("gui_input") {
-			parent.connect("gui_input", owner_ref, util::fn_name(&Self::_on_gui_input),
-				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
-			      .log_if_err();
-		} else if parent.has_signal("pressed") {
+		if parent.has_signal("pressed") {
 			parent.connect("pressed", owner_ref, util::fn_name(&Self::_play_custom),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
-			      .log_if_err();
+				.log_if_err();
+		} else if parent.has_signal("gui_input") {
+			parent.connect("gui_input", owner_ref, util::fn_name(&Self::_on_gui_input),
+				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
+				.log_if_err();
+		} else if parent.has_signal("input_event") {
+			parent.connect("input_event", owner_ref, util::fn_name(&Self::_on_input_event),
+				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
+				.log_if_err();
 		} else {
-			godot_warn!("{}(): No signals found to connect to!\n{owner:?}", util::full_fn_name(&Self::_ready));
+			godot_warn!("{}():\n\
+			 Node `{}` cannot connect to it's parent `{}`\n\
+			 Parent does not have any of these signals: `gui_input` | `pressed` | `input_event`",
+				util::full_fn_name(&Self::_ready), owner.name(), parent.name());
 		}
 	}
 
@@ -42,6 +49,14 @@ impl PlayOnClickAndPitchRandomizer {
 			self._play_custom(owner);
 		}
 	}
+
+	#[method]
+	fn _on_input_event(&self, #[base] owner: &AudioStreamPlayer2D, _viewport: Ref<Node>, event: Ref<InputEvent>, _shape_idx: i64) {
+		if is_confirm_input(event) {
+			self._play_custom(owner);
+		}
+	}
+
 
 	#[method]
 	fn _play_custom(&self, #[base] owner: &AudioStreamPlayer2D) {

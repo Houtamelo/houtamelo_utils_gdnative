@@ -22,23 +22,22 @@ impl PlayOnHoverAndPitchRandomizer {
 		let owner_ref = unsafe { owner.assume_shared() };
 		let parent_option = owner.get_parent();
 		let parent = parent_option.unwrap_manual();
-
-		let mut registered = false;
+		
 		if parent.has_signal("mouse_entered") {
 			parent.connect("mouse_entered", owner_ref, util::fn_name(&PlayOnHoverAndPitchRandomizer::_play_custom),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 			      .log_if_err();
-			registered = true;
+		} else {
+			godot_warn!("{}():\n\
+			Node `{}` cannot connect to it's parent `{}`\n\
+			Parent does not have signal `mouse_entered`.",
+				util::full_fn_name(&Self::_ready), owner.name(), parent.name());
 		}
+		
 		if parent.has_signal("focus_entered") {
 			parent.connect("focus_entered", owner_ref, util::fn_name(&PlayOnHoverAndPitchRandomizer::_play_custom),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 			      .log_if_err();
-			registered = true;
-		}
-
-		if !registered {
-			godot_warn!("PlayOnHover::_ready: No signals found to connect to!\n{owner:?}");
 		}
 	}
 
