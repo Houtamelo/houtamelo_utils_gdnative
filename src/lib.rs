@@ -1,3 +1,4 @@
+#![feature(let_chains)]
 #![allow(unused_imports)]
 
 use gdnative::init::{godot_gdnative_init, godot_gdnative_terminate, godot_nativescript_init };
