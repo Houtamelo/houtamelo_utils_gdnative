@@ -1,6 +1,7 @@
 use gdnative::api::*;
 use gdnative::prelude::*;
 use gdnative_export_node_as_path::extends;
+use util::fn_name;
 
 #[extends(Label)]
 pub struct AutoTextResize {
@@ -13,32 +14,84 @@ pub struct AutoTextResize {
 impl AutoTextResize {
 	#[method]
 	fn _ready(&mut self, #[base] owner: &Label) {
-		owner.set_clip_text(true);
+		if owner.max_lines_visible() <= 0 {
+			owner.set_max_lines_visible(1);
+			godot_warn!(
+				"{fn_name}: max_lines_visible is not set to a positive value. Defaulting to 1.\n\
+				 Object: {node_name}", 
+				fn_name = fn_name(&AutoTextResize::_ready), node_name = owner.name());
+		}
+
+		if !owner.has_autowrap() {
+			owner.set_autowrap(true);
+			godot_warn!(
+				"{fn_name}: autowrap is not set to true. Overriding to true.\n\
+				 Object: {node_name}",
+				fn_name = fn_name(&AutoTextResize::_ready), node_name = owner.name());
+		}
+
 		self.update_font_size(owner);
+	}
+
+	fn set_min_size(&mut self, owner: &Label, value: Variant) {
+		if let Ok(size) = value.try_to::<i64>() {
+			self.min_size = size;
+			self.update_font_size(owner);
+		} else {
+			godot_warn!(
+				"{fn_name}: Failed to convert value to i64.\n\
+				 Value: {value}\n\
+				 Object: {node_name}", 
+				fn_name = fn_name(&AutoTextResize::set_min_size), value = value.to_string(), node_name = owner.name());
+		}
+	}
+
+	fn set_max_size(&mut self, owner: &Label, value: Variant) {
+		if let Ok(size) = value.try_to::<i64>() {
+			self.max_size = size;
+			self.update_font_size(owner);
+		} else {
+			godot_warn!(
+				"{fn_name}: Failed to convert value to i64.\n\
+				 Value: {value}\n\
+				 Object: {node_name}", 
+				fn_name = fn_name(&AutoTextResize::set_max_size), value = value.to_string(), node_name = owner.name());
+		}
+	}
+
+	fn set_text(&mut self, owner: &Label, value: Variant) {
+		if let Ok(text) = value.try_to::<GodotString>() {
+			owner.set_text(text);
+			owner.set_clip_text(true);
+			self.update_font_size(owner);
+		} else {
+			godot_warn!(
+				"{fn_name}: Failed to convert value to GodotString.\n\
+				 Value: {value}\n\
+				 Object: {node_name}",
+				fn_name = fn_name(&AutoTextResize::set_text), value = value.to_string(), node_name = owner.name());
+		}
 	}
 
 	#[method]
 	fn _set(&mut self, #[base] owner: &Label, property: String, value: Variant) -> bool {
-		if property != "text" {
-			return false;
-		}
-
-		let Ok(text) = value.try_to::<GodotString>()
-			else { 
-				godot_warn!(
-					"_set::text: Failed to convert value to GodotString.\n\
-					 Value: {}\n\
-					 Object: {}", value.to_string(), owner.name()
-				);
-				return false;
-			};
-		
-		owner.set_text(text);
-		owner.set_clip_text(true);
-		self.update_font_size(owner);
-		return true;
+		return match property.as_str() {
+			"min_size" => {
+				self.set_min_size(owner, value);
+				true
+			},
+			"max_size" => {
+				self.set_max_size(owner, value);
+				true
+			},
+			"text" => {
+				self.set_text(owner, value);
+				true
+			},
+			_ => false,
+		};
 	}
-	
+
 	fn get_or_create_owned_font(&mut self, owner: &Label) -> Option<Ref<DynamicFont>> {
 		if let Some(already_owned) = &self.owned_font {
 			return Some(already_owned.clone());
@@ -47,18 +100,19 @@ impl AutoTextResize {
 		let original_ref =
 			owner.get_font("font", "")
 			     .or_else(|| owner.get_theme_default_font())
-				 .and_then(|font_ref| font_ref.cast::<DynamicFont>())?;
-		
+			     .and_then(|font_ref| font_ref.cast::<DynamicFont>())?;
+
 		let original = unsafe { original_ref.assume_safe() };
-		
-		let owned_font_ref = 
+
+		let owned_font_ref =
 			original.duplicate(false)
 			        .and_then(|resource| resource.cast::<DynamicFont>())?;
-		
+
 		let owned_font = unsafe { owned_font_ref.assume_safe() };
 		owned_font.set_size(self.max_size);
 		self.owned_font = Some(owned_font_ref.clone());
-		
+		owner.add_font_override("font", owned_font_ref.clone());
+
 		return Some(owned_font_ref);
 	}
 
@@ -68,18 +122,18 @@ impl AutoTextResize {
 			else {
 				godot_warn!(
 					"{}: Failed to get or create owned font.\n\
-					 Object: {}", util::fn_name(&AutoTextResize::update_font_size), owner.name());
+					 Object: {}", fn_name(&AutoTextResize::update_font_size), owner.name());
 				return;
 			};
-		
-		let font = 
+
+		let font =
 			unsafe { font_ref.assume_safe() };
-		
+
 		font.set_size(self.max_size);
 		font.update_changes();
-		
+
 		let mut font_size = self.max_size;
-		
+
 		while owner.get_visible_line_count() < owner.get_line_count()
 			&& font_size > self.min_size {
 			font_size -= 1;

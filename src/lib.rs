@@ -1,7 +1,6 @@
 #![feature(let_chains)]
 #![allow(unused_imports)]
 
-use gdnative::init::{godot_gdnative_init, godot_gdnative_terminate, godot_nativescript_init };
 use gdnative::prelude::*;
 
 mod disallow_click_focus;
@@ -15,18 +14,16 @@ mod audio;
 mod auto_text_resize;
 
 pub mod prelude {
-	pub use crate::inspectors::*;
-	pub use crate::inspectors::option_impls::*;
-	pub use crate::inspectors::manual::*;
-	pub use crate::inspectors::refcounted::*;
-	pub use crate::inspectors::instance::*;
-	pub use crate::disallow_click_focus::*;
+	pub use crate::inspectors::{manual, refcounted, instance, option_impls,
+	                            GodotInstanceSomeInspector, GodotManualSomeInspector, GodotRefCountedSomeInspector, 
+	                            SomeInspector, SomeMutInspector, ErrInspector, NoneInspector, OkInspector, OkMutInspector};
+	pub use crate::disallow_click_focus::DisallowClickFocusOnParent;
 	pub use crate::godot_error_get;
 	pub use crate::godot_panic;
-	pub use crate::tref_acquirer::*;
-	pub use crate::tref_unwrapper::*;
-	pub use crate::extensions::*;
-	pub use crate::to_shared_array::*;
-	pub use crate::audio::*;
+	pub use crate::tref_acquirer::{AssertSafeTRef, AssertSaneTRef, AssertTInstance, TrySafeTRef, TrySaneTRef};
+	pub use crate::tref_unwrapper::{UnwrapInstance, UnwrapManual, UnwrapRefCount};
+	pub use crate::extensions::{TweenExtension, OptionTweenExtension};
+	pub use crate::to_shared_array::IntoSharedArray;
+	pub use crate::audio::{PlayOnHoverAndPitchRandomizer, PlayOnClickAndPitchRandomizer, PitchRandomizer};
 	pub use crate::auto_text_resize::AutoTextResize;
 }

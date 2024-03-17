@@ -3,7 +3,7 @@ use gdnative::prelude::*;
 use crate::inspectors::*;
 
 impl<T> GodotManualSomeInspector<T> for Option<Ref<T>>
-where T: GodotObject<Memory = ManuallyManaged>
+	where T: GodotObject<Memory = ManuallyManaged>
 {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -14,7 +14,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 	}
 
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				closure(value);
@@ -43,7 +43,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 
 	#[must_use]
 	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				return Some(closure(value));
@@ -63,7 +63,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 }
 
 impl<T> GodotManualSomeInspector<T> for &Option<Ref<T>>
-where T: GodotObject<Memory = ManuallyManaged>
+	where T: GodotObject<Memory = ManuallyManaged>
 {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -74,7 +74,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 	}
 
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				closure(value);
@@ -103,7 +103,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 
 	#[must_use]
 	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				return Some(closure(value));
@@ -123,7 +123,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 }
 
 impl<T> GodotManualSomeInspector<T> for Option<&Ref<T>>
-where T: GodotObject<Memory = ManuallyManaged>
+	where T: GodotObject<Memory = ManuallyManaged>
 {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -134,7 +134,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 	}
 
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				closure(value);
@@ -163,7 +163,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 
 	#[must_use]
 	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				return Some(closure(value));
@@ -183,7 +183,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 }
 
 impl<T> GodotManualSomeInspector<T> for &Option<&Ref<T>>
-where T: GodotObject<Memory = ManuallyManaged>
+	where T: GodotObject<Memory = ManuallyManaged>
 {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -194,7 +194,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 	}
 
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				closure(value);
@@ -223,7 +223,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 
 	#[must_use]
 	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
 				return Some(closure(value));
@@ -243,7 +243,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 }
 
 impl<T> GodotManualSomeInspector<T> for Ref<T>
-where T: GodotObject<Memory = ManuallyManaged>
+	where T: GodotObject<Memory = ManuallyManaged>
 {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
@@ -252,7 +252,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 	}
 
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
 			closure(value);
 		} else {
@@ -273,7 +273,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 
 	#[must_use]
 	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
 			return Some(closure(value));
 		} else {
@@ -287,7 +287,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 }
 
 impl<T> GodotManualSomeInspector<T> for &Ref<T>
-where T: GodotObject<Memory = ManuallyManaged>
+	where T: GodotObject<Memory = ManuallyManaged>
 {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
@@ -296,7 +296,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 	}
 
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
 			closure(value);
 		} else {
@@ -317,7 +317,7 @@ where T: GodotObject<Memory = ManuallyManaged>
 
 	#[must_use]
 	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
 			return Some(closure(value));
 		} else {

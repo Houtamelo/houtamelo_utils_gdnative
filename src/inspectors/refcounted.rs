@@ -2,7 +2,7 @@ use gdnative::prelude::*;
 use crate::inspectors::*;
 
 impl<T> GodotRefCountedSomeInspector<T> for Option<Ref<T>>
-where T: GodotObject<Memory = RefCounted>
+	where T: GodotObject<Memory = RefCounted>
 {
 	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -11,7 +11,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			closure(unsafe { value.assume_safe() });
 		} else {
@@ -32,7 +32,7 @@ where T: GodotObject<Memory = RefCounted>
 
 	#[must_use]
 	fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			return Some(closure(unsafe { value.assume_safe() }));
 		} else {
@@ -46,7 +46,7 @@ where T: GodotObject<Memory = RefCounted>
 }
 
 impl<T> GodotRefCountedSomeInspector<T> for Option<&Ref<T>>
-where T: GodotObject<Memory = RefCounted>
+	where T: GodotObject<Memory = RefCounted>
 {
 	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -56,7 +56,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			let value = unsafe { value.assume_safe() };
 			closure(value);
@@ -77,7 +77,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			let value = unsafe { value.assume_safe() };
 			return Some(closure(value));
@@ -92,7 +92,7 @@ where T: GodotObject<Memory = RefCounted>
 }
 
 impl<T> GodotRefCountedSomeInspector<T> for &Option<Ref<T>>
-where T: GodotObject<Memory = RefCounted>
+	where T: GodotObject<Memory = RefCounted>
 {
 	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -101,7 +101,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			closure(unsafe { value.assume_safe() });
 		} else {
@@ -122,7 +122,7 @@ where T: GodotObject<Memory = RefCounted>
 
 	#[must_use]
 	fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			return Some(closure(unsafe { value.assume_safe() }));
 		} else {
@@ -136,7 +136,7 @@ where T: GodotObject<Memory = RefCounted>
 }
 
 impl<T> GodotRefCountedSomeInspector<T> for &Option<&Ref<T>>
-where T: GodotObject<Memory = RefCounted>
+	where T: GodotObject<Memory = RefCounted>
 {
 	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>)) {
 		if let Some(value) = self {
@@ -146,7 +146,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			let value = unsafe { value.assume_safe() };
 			closure(value);
@@ -167,7 +167,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			let value = unsafe { value.assume_safe() };
 			return Some(closure(value));
@@ -182,7 +182,7 @@ where T: GodotObject<Memory = RefCounted>
 }
 
 impl<T> GodotRefCountedSomeInspector<T> for Ref<T>
-where T: GodotObject<Memory = RefCounted>
+	where T: GodotObject<Memory = RefCounted>
 {
 	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>)) {
 		let value = unsafe { self.assume_safe() };
@@ -190,7 +190,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		let value = unsafe { self.assume_safe() };
 		closure(value);
 	}
@@ -203,14 +203,14 @@ where T: GodotObject<Memory = RefCounted>
 
 	#[must_use]
 	fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		let value = unsafe { self.assume_safe() };
 		return Some(closure(value));
 	}
 }
 
 impl<T> GodotRefCountedSomeInspector<T> for &Ref<T>
-where T: GodotObject<Memory = RefCounted>
+	where T: GodotObject<Memory = RefCounted>
 {
 	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>)) {
 		let value = unsafe { self.assume_safe() };
@@ -218,7 +218,7 @@ where T: GodotObject<Memory = RefCounted>
 	}
 
 	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>))
-	where T: std::fmt::Debug {
+	                     where T: std::fmt::Debug {
 		let value = unsafe { self.assume_safe() };
 		closure(value);
 	}
@@ -231,7 +231,7 @@ where T: GodotObject<Memory = RefCounted>
 
 	#[must_use]
 	fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
-	where T: std::fmt::Debug {
+	                      where T: std::fmt::Debug {
 		let value = unsafe { self.assume_safe() };
 		return Some(closure(value));
 	}
