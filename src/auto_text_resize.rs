@@ -12,8 +12,9 @@ pub struct AutoTextResize {
 #[methods]
 impl AutoTextResize {
 	#[method]
-	fn _ready(&self, #[base] owner: &Label) {
+	fn _ready(&mut self, #[base] owner: &Label) {
 		owner.set_clip_text(true);
+		self.update_font_size(owner);
 	}
 
 	#[method]
