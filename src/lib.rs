@@ -12,6 +12,7 @@ mod godot_log_macros;
 mod extensions;
 mod to_shared_array;
 mod audio;
+mod auto_text_resize;
 
 pub mod prelude {
 	pub use crate::inspectors::*;
@@ -27,4 +28,5 @@ pub mod prelude {
 	pub use crate::extensions::*;
 	pub use crate::to_shared_array::*;
 	pub use crate::audio::*;
+	pub use crate::auto_text_resize::AutoTextResize;
 }
