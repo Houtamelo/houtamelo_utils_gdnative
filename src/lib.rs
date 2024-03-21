@@ -19,6 +19,7 @@ pub mod prelude {
 	                            GodotInstanceSomeInspector, GodotManualSomeInspector, GodotRefCountedSomeInspector, 
 	                            SomeInspector, SomeMutInspector, ErrInspector, NoneInspector, OkInspector, OkMutInspector};
 	pub use crate::disallow_click_focus::DisallowClickFocusOnParent;
+	pub use crate::disallow_spin_box_line_edit::DisallowSpinBoxLineEdit;
 	pub use crate::godot_error_get;
 	pub use crate::godot_panic;
 	pub use crate::tref_acquirer::{AssertSafeTRef, AssertSaneTRef, AssertTInstance, TrySafeTRef, TrySaneTRef};
