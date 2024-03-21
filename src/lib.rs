@@ -12,6 +12,7 @@ mod extensions;
 mod to_shared_array;
 mod audio;
 mod auto_text_resize;
+mod disallow_spin_box_line_edit;
 
 pub mod prelude {
 	pub use crate::inspectors::{manual, refcounted, instance, option_impls,

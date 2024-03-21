@@ -36,16 +36,17 @@ impl DisallowClickFocusOnParent {
 	}
 	
 	fn release_parent_focus(&self, owner: &Node) {
-		let Some(parent) = (unsafe {
-			owner.get_parent()
-			     .and_then(|parent|
-				     parent.assume_safe_if_sane()) })
-			else { return };
+		let Some(parent) = (
+			unsafe { 
+				owner.get_parent()
+					 .and_then(|parent| 
+						 parent.assume_safe_if_sane()) 
+			}) else { return };
 		
 		if parent.has_method("release_focus") {
 			unsafe {
-				parent.call_deferred("release_focus", &[])
-			};
+				parent.call_deferred("release_focus", &[]);
+			}
 		} else {
 			godot_warn!("{}():\n\
 			 Node `{}` cannot release focus from it's parent `{}`\n\
