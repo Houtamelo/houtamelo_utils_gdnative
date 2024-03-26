@@ -5,7 +5,7 @@ use std::sync::Arc;
 use std::thread::{self, ThreadId};
 
 use anyhow::{anyhow, Result};
-use gdnative::export::user_data::UserData;
+use gdnative::export::user_data::{Map, MapMut, UserData};
 use gdnative::libc;
 use gdnative::prelude::NativeClass;
 
@@ -124,5 +124,23 @@ impl<T> Clone for GoodCellData<T> {
 		Self {
 			inner: self.inner.clone(),
 		}
+	}
+}
+
+impl<T: NativeClass> Map for GoodCellData<T> {
+	type Err = anyhow::Error;
+
+	#[inline]
+	fn map<F: FnOnce(&Self::Target) -> U, U>(&self, op: F) -> Result<U> {
+		self.inner.try_borrow().map(|r| op(&r))
+	}
+}
+
+impl<T: NativeClass> MapMut for GoodCellData<T> {
+	type Err = anyhow::Error;
+
+	#[inline]
+	fn map_mut<F: FnOnce(&mut Self::Target) -> U, U>(&self, op: F) -> Result<U> {
+		self.inner.try_borrow_mut().map(|mut w| op(&mut w))
 	}
 }
