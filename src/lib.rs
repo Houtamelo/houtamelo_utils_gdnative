@@ -13,6 +13,7 @@ mod to_shared_array;
 mod audio;
 mod auto_text_resize;
 mod disallow_spin_box_line_edit;
+mod good_cell;
 
 pub mod prelude {
 	pub use crate::inspectors::{manual, refcounted, instance, option_impls,
@@ -28,4 +29,5 @@ pub mod prelude {
 	pub use crate::to_shared_array::IntoSharedArray;
 	pub use crate::audio::{PlayOnHoverAndPitchRandomizer, PlayOnClickAndPitchRandomizer, PitchRandomizer};
 	pub use crate::auto_text_resize::AutoTextResize;
+	pub use crate::good_cell::*;
 }
