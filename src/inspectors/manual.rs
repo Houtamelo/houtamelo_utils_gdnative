@@ -31,10 +31,10 @@ impl<T> GodotManualSomeInspector<T> for Option<Ref<T>>
 	}
 
 	#[must_use]
-	fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> {
+	fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			}
 		}
 
@@ -42,11 +42,11 @@ impl<T> GodotManualSomeInspector<T> for Option<Ref<T>>
 	}
 
 	#[must_use]
-	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
+	fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -91,10 +91,10 @@ impl<T> GodotManualSomeInspector<T> for &Option<Ref<T>>
 	}
 
 	#[must_use]
-	fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> {
+	fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			}
 		}
 
@@ -102,11 +102,11 @@ impl<T> GodotManualSomeInspector<T> for &Option<Ref<T>>
 	}
 
 	#[must_use]
-	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
+	fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -151,10 +151,10 @@ impl<T> GodotManualSomeInspector<T> for Option<&Ref<T>>
 	}
 
 	#[must_use]
-	fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> {
+	fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			}
 		}
 
@@ -162,11 +162,11 @@ impl<T> GodotManualSomeInspector<T> for Option<&Ref<T>>
 	}
 
 	#[must_use]
-	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
+	fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -211,10 +211,10 @@ impl<T> GodotManualSomeInspector<T> for &Option<&Ref<T>>
 	}
 
 	#[must_use]
-	fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> {
+	fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			}
 		}
 
@@ -222,11 +222,11 @@ impl<T> GodotManualSomeInspector<T> for &Option<&Ref<T>>
 	}
 
 	#[must_use]
-	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
+	fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				return Some(closure(value));
+				return Some(closure(&value));
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -263,19 +263,19 @@ impl<T> GodotManualSomeInspector<T> for Ref<T>
 	}
 
 	#[must_use]
-	fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> {
+	fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			return Some(closure(value));
+			return Some(closure(&value));
 		}
 
 		return None;
 	}
 
 	#[must_use]
-	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
+	fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			return Some(closure(value));
+			return Some(closure(&value));
 		} else {
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Ref<T>>();
@@ -307,19 +307,19 @@ impl<T> GodotManualSomeInspector<T> for &Ref<T>
 	}
 
 	#[must_use]
-	fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> {
+	fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			return Some(closure(value));
+			return Some(closure(&value));
 		}
 
 		return None;
 	}
 
 	#[must_use]
-	fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>
+	fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			return Some(closure(value));
+			return Some(closure(&value));
 		} else {
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Ref<T>>();

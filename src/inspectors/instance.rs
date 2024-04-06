@@ -8,9 +8,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 		T: NativeClass,
 		AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory>
 {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -19,9 +19,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 		}
 	}
 
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -30,10 +30,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                        where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -46,10 +46,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                            where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -63,9 +63,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -82,9 +82,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -101,10 +101,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -125,10 +125,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                          where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -156,9 +156,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 		T: NativeClass,
 		AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory>
 {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -167,9 +167,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 		}
 	}
 
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -178,10 +178,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                        where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -194,10 +194,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                            where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -211,9 +211,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -230,9 +230,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -249,10 +249,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -273,10 +273,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                          where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -304,9 +304,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 		T: NativeClass,
 		AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory>
 {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -315,9 +315,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 		}
 	}
 
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -326,10 +326,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                        where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -342,10 +342,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                            where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -359,9 +359,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -378,9 +378,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -397,10 +397,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -421,10 +421,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                          where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -452,9 +452,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 		T: NativeClass,
 		AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory>
 {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -463,9 +463,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 		}
 	}
 
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -474,10 +474,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                        where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -490,10 +490,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 		}
 	}
 
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                            where T: std::fmt::Debug {
 		if let Some(value) = self {
-			if let Err(error) = unsafe { value.assume_safe().map_mut(closure) } {
+			if let Err(error) = unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				godot_dbg!(error);
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Instance<T>>();
@@ -507,9 +507,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -526,9 +526,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
+	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -545,10 +545,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map(closure) } {
+			match unsafe { value.assume_safe().map(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -569,10 +569,10 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Option<&Instance<T>>
 	}
 
 	#[must_use]
-	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                          where T: std::fmt::Debug {
 		if let Some(value) = self {
-			match unsafe { value.assume_safe().map_mut(closure) } {
+			match unsafe { value.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 				Ok(result) => {
 					return Some(result);
 				},
@@ -600,8 +600,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 		T: NativeClass,
 		AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory>
 {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
-		if let Err(error) = unsafe { self.assume_safe().map(closure) } {
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
+		if let Err(error) = unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -609,8 +609,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 		}
 	}
 
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
-		if let Err(error) = unsafe { self.assume_safe().map_mut(closure) } {
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
+		if let Err(error) = unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -618,9 +618,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 		}
 	}
 
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                        where T: std::fmt::Debug {
-		if let Err(error) = unsafe { self.assume_safe().map(closure) } {
+		if let Err(error) = unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -628,9 +628,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 		}
 	}
 
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                            where T: std::fmt::Debug {
-		if let Err(error) = unsafe { self.assume_safe().map_mut(closure) } {
+		if let Err(error) = unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -639,8 +639,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 	}
 
 	#[must_use]
-	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
-		match unsafe { self.assume_safe().map(closure) } {
+	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
+		match unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -655,8 +655,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 	}
 
 	#[must_use]
-	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
-		match unsafe { self.assume_safe().map_mut(closure) } {
+	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
+		match unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -671,9 +671,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 	}
 
 	#[must_use]
-	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
-		match unsafe { self.assume_safe().map(closure) } {
+		match unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -688,8 +688,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for Instance<T>
 	}
 
 	#[must_use]
-	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
-		match unsafe { self.assume_safe().map_mut(closure) } {
+	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
+		match unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -710,8 +710,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 	T: NativeClass,
 	AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory>
 {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
-		if let Err(error) = unsafe { self.assume_safe().map(closure) } {
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
+		if let Err(error) = unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -719,8 +719,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 		}
 	}
 
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) {
-		if let Err(error) = unsafe { self.assume_safe().map_mut(closure) } {
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) {
+		if let Err(error) = unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -728,9 +728,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 		}
 	}
 
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                        where T: std::fmt::Debug {
-		if let Err(error) = unsafe { self.assume_safe().map(closure) } {
+		if let Err(error) = unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -738,9 +738,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 		}
 	}
 
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U)
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U)
 	                            where T: std::fmt::Debug {
-		if let Err(error) = unsafe { self.assume_safe().map_mut(closure) } {
+		if let Err(error) = unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			godot_dbg!(error);
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Instance<T>>();
@@ -749,8 +749,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 	}
 
 	#[must_use]
-	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
-		match unsafe { self.assume_safe().map(closure) } {
+	fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
+		match unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -765,8 +765,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 	}
 
 	#[must_use]
-	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
-		match unsafe { self.assume_safe().map_mut(closure) } {
+	fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
+		match unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -781,9 +781,9 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 	}
 
 	#[must_use]
-	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>
+	fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>
 	                      where T: std::fmt::Debug {
-		match unsafe { self.assume_safe().map(closure) } {
+		match unsafe { self.assume_safe().map(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},
@@ -798,8 +798,8 @@ impl<'a, 'r, T> GodotInstanceSomeInspector<'a, 'r, T> for &Instance<T> where
 	}
 
 	#[must_use]
-	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> {
-		match unsafe { self.assume_safe().map_mut(closure) } {
+	fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> {
+		match unsafe { self.assume_safe().map_mut(|inst, base| closure(inst, &base)) } {
 			Ok(ok) => {
 				return Some(ok);
 			},

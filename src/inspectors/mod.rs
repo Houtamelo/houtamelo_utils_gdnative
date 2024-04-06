@@ -20,29 +20,30 @@ pub trait SomeMutInspector<T> {
 pub trait GodotManualSomeInspector<T> where T: GodotObject<Memory = ManuallyManaged> {
 	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>));
 	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>)) where T : std::fmt::Debug;
-	#[must_use] fn map_if_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>;
-	#[must_use] fn map_assert_sane<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> where T : std::fmt::Debug;
+	#[must_use] fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>;
+	#[must_use] fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> where T : std::fmt::Debug;
 }
 
 pub trait GodotRefCountedSomeInspector<T> where T: GodotObject<Memory = RefCounted> {
-	fn touch_if_safe(&self, closure: impl FnOnce(TRef<T>));
-	fn touch_assert_safe(&self, closure: impl FnOnce(TRef<T>)) where T : std::fmt::Debug;
-	#[must_use] fn map_if_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U>;
-	#[must_use] fn map_assert_safe<U>(&self, closure: impl FnOnce(TRef<T>) -> U) -> Option<U> where T : std::fmt::Debug;
+	fn touch_if_safe(&self, closure: impl FnOnce(&T));
+	fn touch_assert_safe(&self, closure: impl FnOnce(&T)) where T : std::fmt::Debug;
+	#[must_use] fn map_if_safe<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>;
+	#[must_use] fn map_assert_safe<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> where T : std::fmt::Debug;
 }
 
 pub trait GodotInstanceSomeInspector<'a, 'r, T>
 	where T::UserData: Map,
 	      T: NativeClass,
 	      AssumeSafeLifetime<'a, 'r>: LifetimeConstraint<<T::Base as GodotObject>::Memory> {
-	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U);
-	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U);
-	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) where T : std::fmt::Debug;
-	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) where T : std::fmt::Debug;
-	#[must_use] fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>;
-	#[must_use] fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U>;
-	#[must_use] fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> where T : std::fmt::Debug;
-	#[must_use] fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, TRef<'_, <T as gdnative::prelude::NativeClass>::Base>) -> U) -> Option<U> where T : std::fmt::Debug;
+	fn touch_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U);
+	fn touch_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U);
+	fn touch_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) where T : std::fmt::Debug;
+	fn touch_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) where T : std::fmt::Debug;
+	#[must_use] fn map_if_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>;
+	#[must_use] fn map_if_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U>;
+	#[must_use] fn map_assert_safe<U>(&'r self, closure: impl FnOnce(&T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> where T: std::fmt::Debug;
+	#[must_use] fn map_assert_safe_mut<U>(&'r self, closure: impl FnOnce(&mut T, &<T as gdnative::prelude::NativeClass>::Base) -> U) -> Option<U> 
+	where T : std::fmt::Debug;
 }
 
 pub trait OkInspector<T> {
