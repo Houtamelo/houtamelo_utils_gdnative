@@ -18,8 +18,8 @@ pub trait SomeMutInspector<T> {
 }
 
 pub trait GodotManualSomeInspector<T> where T: GodotObject<Memory = ManuallyManaged> {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>));
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>)) where T : std::fmt::Debug;
+	fn touch_if_sane(&self, closure: impl FnOnce(&T));
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T)) where T : std::fmt::Debug;
 	#[must_use] fn map_if_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U>;
 	#[must_use] fn map_assert_sane<U>(&self, closure: impl FnOnce(&T) -> U) -> Option<U> where T : std::fmt::Debug;
 }

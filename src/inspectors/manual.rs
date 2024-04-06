@@ -5,19 +5,19 @@ use crate::inspectors::*;
 impl<T> GodotManualSomeInspector<T> for Option<Ref<T>>
 	where T: GodotObject<Memory = ManuallyManaged>
 {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
+	fn touch_if_sane(&self, closure: impl FnOnce(&T)) {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			}
 		}
 	}
 
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T))
 	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -65,19 +65,19 @@ impl<T> GodotManualSomeInspector<T> for Option<Ref<T>>
 impl<T> GodotManualSomeInspector<T> for &Option<Ref<T>>
 	where T: GodotObject<Memory = ManuallyManaged>
 {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
+	fn touch_if_sane(&self, closure: impl FnOnce(&T)) {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			}
 		}
 	}
 
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T))
 	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -125,19 +125,19 @@ impl<T> GodotManualSomeInspector<T> for &Option<Ref<T>>
 impl<T> GodotManualSomeInspector<T> for Option<&Ref<T>>
 	where T: GodotObject<Memory = ManuallyManaged>
 {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
+	fn touch_if_sane(&self, closure: impl FnOnce(&T)) {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			}
 		}
 	}
 
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T))
 	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -185,19 +185,19 @@ impl<T> GodotManualSomeInspector<T> for Option<&Ref<T>>
 impl<T> GodotManualSomeInspector<T> for &Option<&Ref<T>>
 	where T: GodotObject<Memory = ManuallyManaged>
 {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
+	fn touch_if_sane(&self, closure: impl FnOnce(&T)) {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			}
 		}
 	}
 
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T))
 	                     where T: std::fmt::Debug {
 		if let Some(value) = self {
 			if let Some(value) = unsafe { value.assume_safe_if_sane() } {
-				closure(value);
+				closure(&value);
 			} else {
 				let trace = std::backtrace::Backtrace::force_capture();
 				let type_name = std::any::type_name::<Option<Ref<T>>>();
@@ -245,16 +245,16 @@ impl<T> GodotManualSomeInspector<T> for &Option<&Ref<T>>
 impl<T> GodotManualSomeInspector<T> for Ref<T>
 	where T: GodotObject<Memory = ManuallyManaged>
 {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
+	fn touch_if_sane(&self, closure: impl FnOnce(&T)) {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			closure(value);
+			closure(&value);
 		}
 	}
 
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T))
 	                     where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			closure(value);
+			closure(&value);
 		} else {
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Ref<T>>();
@@ -289,16 +289,16 @@ impl<T> GodotManualSomeInspector<T> for Ref<T>
 impl<T> GodotManualSomeInspector<T> for &Ref<T>
 	where T: GodotObject<Memory = ManuallyManaged>
 {
-	fn touch_if_sane(&self, closure: impl FnOnce(TRef<T>)) {
+	fn touch_if_sane(&self, closure: impl FnOnce(&T)) {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			closure(value);
+			closure(&value);
 		}
 	}
 
-	fn touch_assert_sane(&self, closure: impl FnOnce(TRef<T>))
+	fn touch_assert_sane(&self, closure: impl FnOnce(&T))
 	                     where T: std::fmt::Debug {
 		if let Some(value) = unsafe { self.assume_safe_if_sane() } {
-			closure(value);
+			closure(&value);
 		} else {
 			let trace = std::backtrace::Backtrace::force_capture();
 			let type_name = std::any::type_name::<Ref<T>>();
