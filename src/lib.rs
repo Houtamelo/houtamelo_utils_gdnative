@@ -20,16 +20,16 @@ pub mod prelude {
 	pub use crate::inspectors::{manual, refcounted, instance, option_impls,
 	                            GodotInstanceSomeInspector, GodotManualSomeInspector, GodotRefCountedSomeInspector, 
 	                            SomeInspector, SomeMutInspector, ErrInspector, NoneInspector, OkInspector, OkMutInspector};
-	pub use crate::disallow_click_focus::DisallowClickFocusOnParent;
-	pub use crate::disallow_spin_box_line_edit::DisallowSpinBoxLineEdit;
+	pub use crate::disallow_click_focus::*;
+	pub use crate::disallow_spin_box_line_edit::*;
 	pub use crate::godot_error_get;
 	pub use crate::godot_panic;
-	pub use crate::tref_acquirer::{AssertSafeTRef, AssertSaneTRef, AssertTInstance, TrySafeTRef, TrySaneTRef};
-	pub use crate::tref_unwrapper::{UnwrapInstance, UnwrapManual, UnwrapRefCount};
-	pub use crate::extensions::{TweenExtension, OptionTweenExtension};
-	pub use crate::to_shared_array::IntoSharedArray;
-	pub use crate::audio::{PlayOnHoverAndPitchRandomizer, PitchRandomizer};
-	pub use crate::auto_text_resize::AutoTextResize;
+	pub use crate::tref_acquirer::*;
+	pub use crate::tref_unwrapper::*;
+	pub use crate::extensions::*;
+	pub use crate::to_shared_array::*;
+	pub use crate::audio::*;
+	pub use crate::auto_text_resize::*;
 	pub use crate::good_cell::*;
 	pub use crate::inherits::*;
 	pub use gdnative::api::scene_tree_tween::TweenPauseMode;
