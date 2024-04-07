@@ -31,6 +31,7 @@ pub mod prelude {
 	pub use crate::audio::{PlayOnHoverAndPitchRandomizer, PitchRandomizer};
 	pub use crate::auto_text_resize::AutoTextResize;
 	pub use crate::good_cell::*;
+	pub use crate::inherits::*;
 	pub use gdnative::api::scene_tree_tween::TweenPauseMode;
 	pub use gdnative::api::tween::TweenProcessMode;
 	pub use gdnative::object::memory::Memory;
