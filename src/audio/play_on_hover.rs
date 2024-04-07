@@ -1,11 +1,9 @@
-use gdnative::api::AudioStreamPlayer2D;
-use gdnative_export_node_as_path::extends;
-use gdnative::prelude::*;
 use crate::prelude::*;
+use util::prelude::*;
+
 use rand::Rng;
 use rand_xoshiro::rand_core::SeedableRng;
 use rand_xoshiro::Xoshiro256PlusPlus;
-use util;
 
 #[extends(AudioStreamPlayer2D)]
 #[derive(Debug)]
@@ -24,18 +22,18 @@ impl PlayOnHoverAndPitchRandomizer {
 		let parent = parent_option.unwrap_manual();
 		
 		if parent.has_signal("mouse_entered") {
-			parent.connect("mouse_entered", owner_ref, util::fn_name(&PlayOnHoverAndPitchRandomizer::_play_custom),
+			parent.connect("mouse_entered", owner_ref, fn_name(&PlayOnHoverAndPitchRandomizer::_play_custom),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 			      .log_if_err();
 		} else {
 			godot_warn!("{}():\n\
 			Node `{}` cannot connect to it's parent `{}`\n\
 			Parent does not have signal `mouse_entered`.",
-				util::full_fn_name(&Self::_ready), owner.name(), parent.name());
+				full_fn_name(&Self::_ready), owner.name(), parent.name());
 		}
 		
 		if parent.has_signal("focus_entered") {
-			parent.connect("focus_entered", owner_ref, util::fn_name(&PlayOnHoverAndPitchRandomizer::_play_custom),
+			parent.connect("focus_entered", owner_ref, fn_name(&PlayOnHoverAndPitchRandomizer::_play_custom),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 			      .log_if_err();
 		}

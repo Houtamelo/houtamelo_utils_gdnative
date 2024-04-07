@@ -1,11 +1,9 @@
-use gdnative::api::{AudioStreamPlayer2D, GlobalConstants, InputEventMouseButton};
-use gdnative::prelude::*;
-use gdnative_export_node_as_path::extends;
 use crate::prelude::*;
+use util::prelude::*;
+
 use rand::Rng;
 use rand_xoshiro::rand_core::SeedableRng;
 use rand_xoshiro::Xoshiro256PlusPlus;
-use util;
 
 #[extends(AudioStreamPlayer2D)]
 #[derive(Debug)]
@@ -24,22 +22,22 @@ impl PlayOnClickAndPitchRandomizer {
 		let parent = parent_option.unwrap_manual();
 
 		if parent.has_signal("pressed") {
-			parent.connect("pressed", owner_ref, util::fn_name(&Self::_play_custom),
+			parent.connect("pressed", owner_ref, fn_name(&Self::_play_custom),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 				.log_if_err();
 		} else if parent.has_signal("gui_input") {
-			parent.connect("gui_input", owner_ref, util::fn_name(&Self::_on_gui_input),
+			parent.connect("gui_input", owner_ref, fn_name(&Self::_on_gui_input),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 				.log_if_err();
 		} else if parent.has_signal("input_event") {
-			parent.connect("input_event", owner_ref, util::fn_name(&Self::_on_input_event),
+			parent.connect("input_event", owner_ref, fn_name(&Self::_on_input_event),
 				VariantArray::new_shared(), Object::CONNECT_DEFERRED)
 				.log_if_err();
 		} else {
 			godot_warn!("{}():\n\
 			 Node `{}` cannot connect to it's parent `{}`\n\
 			 Parent does not have any of these signals: `gui_input` | `pressed` | `input_event`",
-				util::full_fn_name(&Self::_ready), owner.name(), parent.name());
+				full_fn_name(&Self::_ready), owner.name(), parent.name());
 		}
 	}
 

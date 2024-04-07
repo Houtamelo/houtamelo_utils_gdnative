@@ -1,7 +1,5 @@
-use gdnative::api::*;
-use gdnative::prelude::*;
-use gdnative_export_node_as_path::extends;
-use util::fn_name;
+use crate::prelude::*;
+use util::prelude::*;
 
 #[extends(Label)]
 pub struct AutoTextResize {

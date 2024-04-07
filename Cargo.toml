@@ -1,6 +1,6 @@
 [package]
 name = "houtamelo_utils_gdnative"
-version = "1.7.1"
+version = "2.0.0"
 authors = ["Houtamelo"]
 edition = "2021"
 description = "A collection of utilities shared between Houtamelo's GDNative projects."
@@ -16,5 +16,5 @@ nameof = "1.2"
 gdnative_export_node_as_path = "0.1"
 rand = "0.8"
 rand_xoshiro = "0.6"
-util = { package = "houtamelo_utils", version = "1.0" }
+util = { package = "houtamelo_utils", version = "2.0" }
 anyhow = "1.0"
