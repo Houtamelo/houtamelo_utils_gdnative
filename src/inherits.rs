@@ -27,12 +27,10 @@ pub trait FlexCast {
 }
 
 auto trait NotRef {}
-
-#[allow(suspicious_auto_trait_impls)]
 impl<T> !NotRef for Ref<T> {}
-
-#[allow(suspicious_auto_trait_impls)]
 impl<T> !NotRef for TRef<'_, T> {}
+impl<T> !NotRef for Instance<T> {}
+impl<T> !NotRef for TInstance<'_, T> {}
 
 impl<T: GodotObject + NotRef> FlexCast for T {
 	type Inner = T;
@@ -58,11 +56,35 @@ impl<T: GodotObject> FlexCast for TRef<'_, T> {
 	}
 }
 
+impl<TUser: NativeClass<Base: GodotObject>> FlexCast for Instance<TUser> {
+	type Inner = TUser::Base;
+
+	fn inner(&self) -> Ref<Self::Inner> {
+		self.clone().into_base()
+	}
+}
+
+impl<TUser: NativeClass<Base: GodotObject>> FlexCast for TInstance<'_, TUser> {
+	type Inner = TUser::Base;
+
+	fn inner(&self) -> Ref<Self::Inner> {
+		unsafe { self.base().assume_shared() }
+	}
+}
+
 #[allow(unused)]
-fn please_compile(node: &CanvasItem, node_tref: TRef<CanvasItem>, node_ref: Ref<Node>) {
+unsafe fn please_compile<T: NativeClass<Base: SubClass<Node>>>(
+	node: &CanvasItem,
+	node_tref: TRef<CanvasItem>,
+	node_ref: Ref<Node>,
+	instance: &Instance<T>,
+	t_instance: TInstance<T>) {
 	let n = node.flex_cast::<Node>();
 	let n_tref = node_tref.flex_cast::<Node>();
 	let n_ref = node_ref.flex_cast::<Node>();
+	
+	test(instance);
+	test(&t_instance);
 }
 
 #[allow(unused)]
