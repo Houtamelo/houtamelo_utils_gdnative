@@ -12,6 +12,26 @@ pub struct AutoTextResize {
 impl AutoTextResize {
 	#[method]
 	fn _ready(&mut self, #[base] owner: &Label) {
+		if self.max_size == 0 {
+			godot_warn!(
+				"{fn_name}: max_size is not set to a positive value. Defaulting to current font_size.\n\
+				 Object: {node_name}", 
+				fn_name = fn_name(&AutoTextResize::_ready), node_name = owner.name());
+			self.max_size = 
+				owner.get_font("font", "")
+					 .and_then(|font| font.cast::<DynamicFont>())
+					 .map(|font| unsafe { font.assume_safe().size() })
+					 .unwrap_or(16);
+		}
+		
+		if self.min_size == 0 {
+			godot_warn!(
+				"{fn_name}: min_size is not set to a positive value. Defaulting to 6.\n\
+				 Object: {node_name}", 
+				fn_name = fn_name(&AutoTextResize::_ready), node_name = owner.name());
+			self.min_size = 6;
+		}
+		
 		if owner.max_lines_visible() <= 0 {
 			owner.set_max_lines_visible(1);
 			godot_warn!(

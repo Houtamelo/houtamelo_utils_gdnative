@@ -1,6 +1,6 @@
 [package]
 name = "houtamelo_utils_gdnative"
-version = "2.0.4"
+version = "2.0.5"
 authors = ["Houtamelo"]
 edition = "2021"
 description = "A collection of utilities shared between Houtamelo's GDNative projects."
