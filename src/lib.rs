@@ -16,6 +16,7 @@ mod disallow_spin_box_line_edit;
 mod good_cell;
 mod inherits;
 mod connect_deferred;
+mod loading;
 
 pub mod prelude {
 	pub use crate::inspectors::{manual, refcounted, instance, option_impls,
@@ -34,6 +35,7 @@ pub mod prelude {
 	pub use crate::good_cell::*;
 	pub use crate::inherits::*;
 	pub use crate::connect_deferred::*;
+	pub use crate::loading::*;
 	pub use gdnative::api::scene_tree_tween::TweenPauseMode;
 	pub use gdnative::api::tween::TweenProcessMode;
 	pub use gdnative::object::memory::Memory;
