@@ -1,6 +1,6 @@
 [package]
 name = "houtamelo_utils_gdnative"
-version = "2.0.6"
+version = "2.0.7"
 authors = ["Houtamelo"]
 edition = "2021"
 description = "A collection of utilities shared between Houtamelo's GDNative projects."
@@ -8,7 +8,7 @@ license = "MIT"
 repository = "https://github.com/Houtamelo/houtamelo_utils_gdnative"
 
 [lib]
-crate-type = ["lib"]
+crate-type = ["lib", "cdylib"]
 
 [dependencies]
 gdnative = "0.11"
